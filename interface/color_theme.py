@@ -1,7 +1,10 @@
 # Based on catpuccin palette: https://github.com/catppuccin/palette.git
+
+import customtkinter as ctk
+
 # Latte = Light theme
 # Macchiato = Dark theme
-catppuccin_paletas = {
+catppuccin_palette = {
     "latte": {
         "rosewater": "#dc8a78",
         "flamingo": "#dd7878",
@@ -60,3 +63,5 @@ catppuccin_paletas = {
     }
 }
 
+def get_palette():
+    return catppuccin_palette["macchiato"] if ctk.get_appearance_mode() == "Dark" else catppuccin_palette["latte"]

@@ -2,3 +2,4 @@ excel/
 __pycache__/
 app/__pycache__/
 interface/__pycache__
+*.xlsx

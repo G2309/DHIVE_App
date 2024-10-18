@@ -1,8 +1,9 @@
 import customtkinter as ctk
+from interface.form import new_user_form
 
-# Function to organize the objects in the interface (use GRID)
+# Funcion para organizar los elementos en la interfaz
 def create_layout(parent, colors):
-    # Left Frame
+    # Frame izquierdo
     left_frame = ctk.CTkFrame(
             parent,
             width=500,
@@ -11,7 +12,9 @@ def create_layout(parent, colors):
             )
     left_frame.grid(row=1, column=0, padx=20, pady=20, sticky="nsew")
 
-    # Right Frame
+    new_user_form(left_frame)
+
+    # Frame derecho
     right_frame = ctk.CTkFrame(
             parent,
             width=500,

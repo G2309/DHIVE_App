@@ -1,4 +1,4 @@
-from file_reader import read_training_data
+from app.file_reader import read_training_data
 
 # Get all data
 def get_training_data():

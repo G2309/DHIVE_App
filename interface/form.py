@@ -1,8 +1,8 @@
 import customtkinter as ctk
 from app.user_data import add_new_user, verify_user, get_trainings
 
-# Funcion para crear un formulario (frontend) para ingresar datos del nuevo usuario
-def new_user_form(parent):
+# New user form interface
+def new_user_form(parent, colors):
     first_name_var = ctk.StringVar()
     second_name_var = ctk.StringVar()
     first_surname_var = ctk.StringVar()
@@ -12,7 +12,7 @@ def new_user_form(parent):
     message_var = ctk.StringVar()
     message_label = None
 
-    # Crear tags y campos de entrada para el formulario de usuario nuevo
+    # Create tags and input fields for a new user form 
 
     ctk.CTkLabel(parent, text="Primer Nombre: ").grid(row=0, column=0, padx=10, pady=10,)
     ctk.CTkEntry(parent, textvariable=first_name_var).grid(row=0, column=1, padx=10, pady=10)
@@ -32,11 +32,16 @@ def new_user_form(parent):
     ctk.CTkLabel(parent, text="Carrera: ").grid(row=5, column=0, padx=10, pady=10,)
     ctk.CTkEntry(parent, textvariable=career_name_var).grid(row=5, column=1, padx=10, pady=10)
 
-    # Boton para enviar el formulario
-    submit_button = ctk.CTkButton(parent, text="Agregar Usuario", command=submit_user)
-    submit_button.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
+    submit_button = ctk.CTkButton(parent,
+                                  text="Agregar Usuario",
+                                  command=submit_user, 
+                                  fg_color=colors["mauve"],
+                                  hover_color=colors["maroon"],
+                                  text_color=colors["crust"],
+                                  )  # The command submit_user is the function below
+    submit_button.grid(row=7, column=0, columnspan=2,padx=10, pady=10)
 
-# Funcion para ingresar los datos y verificar que sean validos
+# Submit and verify user data
 def submit_user():
     first_name = first_name_var.get()
     carnet = id_number_var.get()

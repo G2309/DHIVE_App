@@ -10,7 +10,7 @@ def create_app():
     app.attributes('-fullscreen', True)
 
     # Color theme init
-    ctk.set_appearance_mode('dark')
+    ctk.set_appearance_mode('light')
     colors = get_palette()
 
     # App configuration

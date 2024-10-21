@@ -3,6 +3,20 @@ from interface.color_theme import get_palette
 from interface.tabs import create_tabs
 from interface.layout import create_layout
 
+# Update layout by tabview
+def update_layout(parent, colors, tab):
+    # Clean the existing frames
+    for widget in parent.winfo_children():
+        widget.destroy()
+
+    if tab == "Registro Auxiliares":
+        create_layout(parent, colors, "Registro Auxiliares")
+    elif tab == "Datos Estudiantes":
+        create_layout(parent, colors, "Datos Estudiantes")
+    elif tab == "Registro Entrada Estudiantes":
+        create_layout(parent, colors, "Registro Entrada Estudiantes")
+
+# Main Interface
 def create_app():
     # Interface init
     app = ctk.CTk()
@@ -15,10 +29,11 @@ def create_app():
 
     # App configuration
     app.configure(fg_color=colors["base"])
-
+    
+    # Create tabs
     tabs = create_tabs(app, colors)
     tabs.grid(row=0, column=0, columnspan=2, padx=20, pady=20, sticky="nsew")
 
-    create_layout(app, colors)
+    update_layout(app, colors, tabs.get())
 
     return app

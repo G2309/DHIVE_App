@@ -29,9 +29,9 @@ def create_tabs(parent, colors):
                 user_info = f"Nombre: {user_data.iloc[0]['Primer Nombre']} {user_data.iloc[0]['Segundo Nombre']}\n"
                 user_info += f"Apellidos: {user_data.iloc[0]['Primer Apellido']} {user_data.iloc[0]['Segundo Apellido']}\n"
                 user_info += f"Carrera: {user_data.iloc[0]['Carrera']}"
-                user_data_label.config(text=user_info)
+                user_data_label.configure(text=user_info)
             else:
-                user_data_label.config(text="Usuario no encontrado.")
+                user_data_label.configure(text="Usuario no encontrado.")
 
         # Botón de búsqueda
         search_button = ctk.CTkButton(tab, text="Buscar Usuario", command=search_user, 
@@ -70,7 +70,6 @@ def create_app():
     ctk.set_appearance_mode('light')
     colors = get_palette()
 
-    # App configuration
     app.configure(fg_color=colors["base"])
 
     # Crear las pestañas

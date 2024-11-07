@@ -1,4 +1,5 @@
 from app.file_reader import read_user_data
+import pandas as pd
 
 # Diccionario con las capacitaciones disponibles (para agregar una nueva capacitacion, hazlo en el ultimo lugar sumando 1 a la llave)
 trainings_available = {
@@ -27,7 +28,7 @@ def get_users_data():
 def add_new_user(new_user):
     df = get_users_data()
     new_user["Número usuario"] = df["Número usuario"].max() + 1
-    df = df.append(new_user, ignore_index=True)
+    df = pd.concat([df, pd.DataFrame([new_user])], ignore_index=True)
     df.to_excel('DATOS_USUARIOS.xlsx', index=False)
     return True
 

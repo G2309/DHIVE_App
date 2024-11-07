@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from interface.color_theme import get_palette
-from app.user_data import find_user_by_id
+from interface.student_tab import setup_student_tab  # Import the student tab setup function
+
 def create_tabs(parent, colors):
     # Create the TabView for the 3 tabs
     tabview = ctk.CTkTabview(parent)
@@ -11,62 +12,36 @@ def create_tabs(parent, colors):
     tabview.add("Auxiliares")
     tabview.add("Algo")
 
-    # Tab1 - Students
-    def search_user_tab(tab):
-        # Entrada para carnet
-        carnet_var = ctk.StringVar()
-        ctk.CTkLabel(tab, text="Carnet: ").grid(row=0, column=0, padx=10, pady=10)
-        carnet_entry = ctk.CTkEntry(tab, textvariable=carnet_var)
-        carnet_entry.grid(row=0, column=1, padx=10, pady=10)
-
-        def search_user():
-            try:
-                carnet = int(carnet_var.get().strip())
-            except ValueError:
-                user_data_label.configure(text="Invalid carnet format.")
-                return
-            # Retrieve user data by ID
-            user_data = find_user_by_id(carnet)
-            if not user_data.empty:
-                # Format of user info
-                user_info = (
-                    f"Name: {user_data.iloc[0]['Primer Nombre']} {user_data.iloc[0]['Segundo Nombre']}\n"
-                    f"Last Name: {user_data.iloc[0]['Primer apellido']} {user_data.iloc[0]['Segundo apellido']}\n"
-                    f"Career: {user_data.iloc[0]['Carrera']}"
-                )
-                user_data_label.configure(text=user_info)
-            else:
-                user_data_label.configure(text="User not found.")
-
-
-        # Search button
-        search_button = ctk.CTkButton(tab, text="Buscar Usuario",
-                                      command=search_user,
-                                      fg_color=colors["mauve"],
-                                      hover_color=colors["maroon"],
-                                      text_color=colors["crust"])
-        search_button.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
-
-        # Label to display user data
-        user_data_label = ctk.CTkLabel(tab, text="")
-        user_data_label.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
-
+    # Associate each function to its corresponding tab
+    setup_student_tab(tabview.tab("Estudiantes"), colors)  # Load student tab layout
+    
     # Tab2 - Assistants
-    def register_user_tab(tab):
-        from interface.form import new_user_form
-        new_user_form(tab, colors)  # Usamos la función ya definida para registrar un nuevo usuario
+    def assistants_tab(tab):
+        left_frame = ctk.CTkFrame(tab, width=200, fg_color=colors["base"])
+        left_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ns")
 
-    # Tab3 - Do not know ?¿
+        right_frame = ctk.CTkFrame(tab, fg_color=colors["mantle"])
+        right_frame.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+        
+        # Example content for assistants tab
+        ctk.CTkLabel(right_frame, text="Contenido para la pestaña Auxiliares").grid(row=0, column=0)
+
+    # Tab3 - Other Function
     def another_function_tab(tab):
-        label = ctk.CTkLabel(tab, text="Tab para algo que no se me ha ocurrido")
+        left_frame = ctk.CTkFrame(tab, width=200, fg_color=colors["base"])
+        left_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ns")
+
+        right_frame = ctk.CTkFrame(tab, fg_color=colors["mantle"])
+        right_frame.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
+        
+        label = ctk.CTkLabel(right_frame, text="Tab para algo que no se me ha ocurrido")
         label.grid(row=0, column=0, padx=10, pady=10)
 
-    # Link each function to its corresponding tab
-    search_user_tab(tabview.tab("Estudiantes"))
-    register_user_tab(tabview.tab("Auxiliares"))
+    # Link each tab to its content setup
+    assistants_tab(tabview.tab("Auxiliares"))
     another_function_tab(tabview.tab("Algo"))
 
-# Create tab
+# Create the application
 def create_app():
     global left_frame, right_frame, colors
 

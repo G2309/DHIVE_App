@@ -28,7 +28,7 @@ def add_new_user(new_user):
     df = get_users_data()
     new_user["Número usuario"] = df["Número usuario"].max() + 1
     df = df.append(new_user, ignore_index=True)
-    df.to_excel('../DATOS_USUARIOS.xlsx', index=False)
+    df.to_excel('DATOS_USUARIOS.xlsx', index=False)
     return True
 
 # Verificar si un usuario existe en el xlsx
@@ -55,3 +55,4 @@ def update_user_data(carnet, new_data):
 def get_trainings(training_num):
     number = [int(n) for n in training_num.split(',') if n.isdigit()]
     return ', '.join([trainings_available[num] for num in number if num in trainings_available])
+

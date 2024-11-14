@@ -17,7 +17,7 @@ def create_tabs(parent, colors):
     
     # Tab2 - Assistants
     def assistants_tab(tab):
-        left_frame = ctk.CTkFrame(tab, width=200, fg_color=colors["base"])
+        left_frame = ctk.CTkFrame(tab, width=500, fg_color=colors["base"])
         left_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ns")
 
         right_frame = ctk.CTkFrame(tab, fg_color=colors["mantle"])
@@ -28,7 +28,7 @@ def create_tabs(parent, colors):
 
     # Tab3 - Other Function
     def another_function_tab(tab):
-        left_frame = ctk.CTkFrame(tab, width=200, fg_color=colors["base"])
+        left_frame = ctk.CTkFrame(tab, width=500, fg_color=colors["base"])
         left_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ns")
 
         right_frame = ctk.CTkFrame(tab, fg_color=colors["mantle"])
@@ -51,7 +51,7 @@ def create_app():
     app.attributes('-fullscreen', True)
 
     # Color theme init
-    ctk.set_appearance_mode('dark')
+    ctk.set_appearance_mode('light')
     colors = get_palette()
 
     app.configure(fg_color=colors["base"])

@@ -8,7 +8,9 @@ def setup_student_tab(tab, colors):
     """
 
     # Create left and right frames
-    left_frame = ctk.CTkFrame(tab, width=200, fg_color=colors["base"])
+    # Left frame =  user options
+    # Right frame = input
+    left_frame = ctk.CTkFrame(tab, width=500, fg_color=colors["base"])
     left_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ns")
 
     right_frame = ctk.CTkFrame(tab, fg_color=colors["mantle"])

@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from app.user_data import find_user_by_id, get_trainings
 from interface.form import new_user_form
+from interface.modify_form import modify_user_form
 
 def setup_student_tab(tab, colors):
     """
@@ -8,7 +9,7 @@ def setup_student_tab(tab, colors):
     """
 
     # Create left and right frames
-    # Left frame =  user options
+    # Left frame = user options
     # Right frame = input
     left_frame = ctk.CTkFrame(tab, width=500, fg_color=colors["base"])
     left_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ns")
@@ -75,6 +76,14 @@ def setup_student_tab(tab, colors):
         # Load the form
         new_user_form(right_frame, colors)
 
+    # Function to show modify form
+    def show_modify_form():
+        for widget in right_frame.winfo_children():
+            widget.destroy()  # Clear right frame
+        
+        # Load the modify user form
+        modify_user_form(right_frame, colors)
+
     # Buttons in left frame for options
     search_button = ctk.CTkButton(left_frame, text="Buscar por ID",
                                   command=show_search_user, 
@@ -89,4 +98,11 @@ def setup_student_tab(tab, colors):
                                     hover_color=colors["maroon"],
                                     text_color=colors["crust"])
     register_button.grid(row=1, column=0, padx=10, pady=10)
+
+    modify_button = ctk.CTkButton(left_frame, text="Modificar Usuario",
+                                  command=show_modify_form,
+                                  fg_color=colors["mauve"],
+                                  hover_color=colors["maroon"],
+                                  text_color=colors["crust"])
+    modify_button.grid(row=2, column=0, padx=10, pady=10)
 

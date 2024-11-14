@@ -2,6 +2,28 @@ import customtkinter as ctk
 from app.user_data import add_new_user, verify_user
 from app.training_data import get_training_data
 
+# Define la lista de carreras
+opciones1 = [
+    "Arquitectura", "Administración de empresas con Especialización en Transformación Digital",
+    "Antropología", "Arqueología", "Baccalaureatus en Artibus", "Baccalaureatus en Scientiis",
+    "Composición y Producción Musical", "Diseño de Producto e innovación", "International Marketing and Business Analytics",
+    "Psicología", "Relaciones internacionales", "Biología", "Bioquímica y Microbiología", "Biotecnología Molecular",
+    "Comunicación Estratégica", "Física", "Matemática Aplicada", "Nutrición", "Química", "Química Farmacéutica",
+    "Ingeniería Biomédica", "Ingeniería en Biotecnología Industrial", "Ingeniería en Ciencia de los Alimentos",
+    "Ingeniería en Ciencia de los alimentos Industrial", "Ingeniería en Ciencias de la Administración",
+    "Ingeniería en Ciencia de los Datos", "Ingeniería Civil", "Ingeniería Civil Ambiental",
+    "Ingeniería Civil Arquitectónica", "Ingeniería Civil Industrial", "Ingeniería en Ciencia de la computación y Tecnologías de la información",
+    "Ingeniería Electrónica", "Ingeniería Industrial", "Ingeniería Mecánica", "Ingeniería Mecánica Industrial",
+    "Ingeniería Mecatrónica", "Ingeniería Química", "Ingeniería Química Industrial",
+    "Profesorado de Enseñanza Media Especializado en Educación Musical",
+    "Profesorado de Enseñanza Media especializado en English Language Teaching (ELT)",
+    "Profesorado Especializado en Educación Inclusiva", "Profesorado Especializado en Educación Primaria (100% virtual)",
+    "Profesorado Especializado en Problemas del Aprendizaje", "Profesorado de Enseñanza Media Especializado en Matemática y Ciencias Físicas",
+    "Profesorado de Enseñanza Media Especializado en Ciencias Químicas y Biológicas",
+    "Profesorado de Enseñanza Media Especializado en Ciencias Sociales",
+    "Profesorado de Enseñanza Media Especializado en Comunicación y Lenguaje", "Otra"
+]
+
 def new_user_form(parent, colors):
     # Define input variables
     first_name_var = ctk.StringVar()
@@ -10,6 +32,7 @@ def new_user_form(parent, colors):
     second_surname_var = ctk.StringVar()
     id_number_var = ctk.StringVar()
     career_name_var = ctk.StringVar()
+    role_name_var = ctk.StringVar(value="Estudiante")  # Default value for ROL
     message_var = ctk.StringVar()
 
     # Load available trainings
@@ -30,6 +53,7 @@ def new_user_form(parent, colors):
     def submit_user():
         first_name = first_name_var.get()
         carnet = id_number_var.get()
+        
         # Validate numeric ID
         if not carnet.isdigit():
             message_var.set("Error: El carnet debe ser un número")
@@ -46,6 +70,7 @@ def new_user_form(parent, colors):
                 "Segundo apellido": second_surname_var.get(),
                 "Carnet": id_number_var.get(),
                 "Carrera": career_name_var.get(),
+                "ROL": role_name_var.get(),
                 # Save selected trainings as a list of IDs (numbers)
                 "Capacitaciones": ', '.join(map(str, selected_trainings))  # Convert to string of numbers
             }
@@ -74,14 +99,27 @@ def new_user_form(parent, colors):
     ctk.CTkLabel(parent, text="Carnet: ").grid(row=4, column=0, padx=10, pady=10)
     ctk.CTkEntry(parent, textvariable=id_number_var).grid(row=4, column=1, padx=10, pady=10)
 
+    # Career selectbox
     ctk.CTkLabel(parent, text="Carrera: ").grid(row=5, column=0, padx=10, pady=10)
-    ctk.CTkEntry(parent, textvariable=career_name_var).grid(row=5, column=1, padx=10, pady=10)
+    career_selectbox = ctk.CTkOptionMenu(parent, variable=career_name_var,
+                                         values=opciones1, fg_color=colors["mauve"],
+                                         button_hover_color=colors["maroon"],
+                                         button_color=colors["peach"])
+    career_selectbox.grid(row=5, column=1, padx=10, pady=10)
+    
+    # ROL selectbox
+    ctk.CTkLabel(parent, text="ROL: ").grid(row=6, column=0, padx=10, pady=10)
+    role_selectbox = ctk.CTkOptionMenu(parent, variable=role_name_var,
+                                       values=["Estudiante", "Auxiliar"],
+                                       fg_color=colors["mauve"], button_hover_color=colors["maroon"],
+                                       button_color=colors["peach"])
+    role_selectbox.grid(row=6, column=1, padx=10, pady=10)
 
     # Training selection label and checkboxes
-    ctk.CTkLabel(parent, text="Capacitaciones: ").grid(row=6, column=0, padx=10, pady=10)
+    ctk.CTkLabel(parent, text="Capacitaciones: ").grid(row=7, column=0, padx=10, pady=10)
 
     # Create a checkbox for each available training
-    row = 7  # Start from row 7 for checkbox placement
+    row = 8  # Start from row 8 for checkbox placement
     for training in available_trainings:
         checkbox = ctk.CTkCheckBox(
             parent,

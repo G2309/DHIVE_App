@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from app.user_data import add_new_user, verify_user, update_user_data, find_user_by_id
+from app.user_data import add_new_user, verify_user
 from app.training_data import get_training_data
 
 def new_user_form(parent, colors):
@@ -37,10 +37,7 @@ def new_user_form(parent, colors):
 
         # Verify if user already exists
         if verify_user(first_name, carnet):
-            message_var.set("El usuario ya existe. Puede modificar sus datos.")
-            # Change button to modify user
-            submit_button.configure(text="Modificar Usuario", command=modify_user)
-            load_user_data(carnet)  # Load user data into the form
+            message_var.set("El usuario ya existe.")
         else:
             new_user = {
                 "Primer Nombre": first_name_var.get(),
@@ -60,45 +57,6 @@ def new_user_form(parent, colors):
             else:
                 message_var.set("Error al agregar usuario")
                 message_label.configure(text_color="red")
-
-    # Function to modify existing user data
-    def modify_user():
-        carnet = id_number_var.get()
-        new_data = {
-            "Primer Nombre": first_name_var.get(),
-            "Segundo Nombre": second_name_var.get(),
-            "Primer apellido": first_surname_var.get(),
-            "Segundo apellido": second_surname_var.get(),
-            "Carrera": career_name_var.get(),
-            "Capacitaciones": ', '.join(map(str, selected_trainings))  # Convert to string of numbers
-        }
-
-        if update_user_data(carnet, new_data):
-            message_var.set("Datos del usuario modificados")
-            message_label.configure(text_color="green")
-        else:
-            message_var.set("Error al modificar los datos")
-            message_label.configure(text_color="red")
-
-    # Function to load user data into the form
-    def load_user_data(carnet):
-        user_data = find_user_by_id(carnet).iloc[0]  # Get the user data
-        first_name_var.set(user_data["Primer Nombre"])
-        second_name_var.set(user_data["Segundo Nombre"])
-        first_surname_var.set(user_data["Primer apellido"])
-        second_surname_var.set(user_data["Segundo apellido"])
-        career_name_var.set(user_data["Carrera"])
-        # Load trainings (this is optional, assuming the data is in a list)
-        selected_trainings.clear()
-        selected_trainings.extend(map(int, user_data["Capacitaciones"].split(', ')))
-        
-        # Check the checkboxes based on the user's trainings
-        for training in available_trainings:
-            training_id = training_map.get(training, None)
-            if training_id in selected_trainings:
-                # Mark the checkbox as selected
-                # This can be handled with some checkbox logic, for now we assume it updates
-                pass
 
     # Create labels and entry fields for the form
     ctk.CTkLabel(parent, text="Primer Nombre: ").grid(row=0, column=0, padx=10, pady=10)

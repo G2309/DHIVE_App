@@ -6,6 +6,7 @@ def create_tabs(parent, colors):
     # Create the TabView for the 3 tabs
     tabview = ctk.CTkTabview(parent)
     tabview.grid(row=0, column=0, padx=20, pady=20)
+    tabview.configure(require_redraw=True, fg_color=colors["mantle"])
 
     # Create the 3 tabs
     tabview.add("Estudiantes")

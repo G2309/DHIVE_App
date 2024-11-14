@@ -58,7 +58,8 @@ def show_register_form(frame, colors):
     time_label.grid(row=len(entry_labels) + 1, column=0, padx=10, pady=5, sticky="e")
     
     time_var = ctk.StringVar(value="07:00 - 10:00")
-    time_dropdown = ctk.CTkOptionMenu(frame, variable=time_var, values=list(time_slots.keys()))
+    time_dropdown = ctk.CTkOptionMenu(frame, variable=time_var, values=list(time_slots.keys()),
+                                      fg_color=colors["mauve"], button_hover_color=colors["maroon"], button_color=colors["peach"])
     time_dropdown.grid(row=len(entry_labels) + 1, column=1, padx=10, pady=5, sticky="w")
 
     # Submit button

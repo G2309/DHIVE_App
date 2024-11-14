@@ -50,6 +50,7 @@ def setup_student_tab(tab, colors):
                     f"Nombre: {user_data.iloc[0]['Primer Nombre']} {user_data.iloc[0]['Segundo Nombre']}\n"
                     f"Apellido: {user_data.iloc[0]['Primer apellido']} {user_data.iloc[0]['Segundo apellido']}\n"
                     f"Carrera: {user_data.iloc[0]['Carrera']}\n"
+                    f"Bloqueos: {user_data.iloc[0]['Bloqueos']}\n"
                     f"Capacitaciones:\n{trainings}"
                 )
                 user_data_label.configure(text=user_info)

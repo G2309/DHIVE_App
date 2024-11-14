@@ -1,12 +1,7 @@
 import customtkinter as ctk
 from app.user_data import add_new_user, verify_user
-
-# New user form interface
-import customtkinter as ctk
-from app.user_data import add_new_user, verify_user
 from app.training_data import get_training_data
 
-# New user form interface
 def new_user_form(parent, colors):
     # Define input variables
     first_name_var = ctk.StringVar()
@@ -21,6 +16,12 @@ def new_user_form(parent, colors):
     training_data = get_training_data()  # Load training data
     available_trainings = training_data['Capacitación'].tolist()
 
+    # Map each training to a number (ID)
+    training_map = {training: index + 1 for index, training in enumerate(available_trainings)}
+
+    # Store selected training IDs
+    selected_trainings = []
+
     # State message label
     message_label = ctk.CTkLabel(parent, textvariable=message_var)
     message_label.grid(row=7, column=0, columnspan=2, padx=10, pady=10)
@@ -29,7 +30,6 @@ def new_user_form(parent, colors):
     def submit_user():
         first_name = first_name_var.get()
         carnet = id_number_var.get()
-        
         # Validate numeric ID
         if not carnet.isdigit():
             message_var.set("Error: El carnet debe ser un número")
@@ -46,7 +46,8 @@ def new_user_form(parent, colors):
                 "Segundo apellido": second_surname_var.get(),
                 "Carnet": id_number_var.get(),
                 "Carrera": career_name_var.get(),
-                "Capacitaciones": ', '.join(training_selection_var.get())  # Save selected trainings as comma-separated string
+                # Save selected trainings as a list of IDs (numbers)
+                "Capacitaciones": ', '.join(map(str, selected_trainings))  # Convert to string of numbers
             }
 
             # Attempt to add the new user
@@ -76,16 +77,31 @@ def new_user_form(parent, colors):
     ctk.CTkLabel(parent, text="Carrera: ").grid(row=5, column=0, padx=10, pady=10)
     ctk.CTkEntry(parent, textvariable=career_name_var).grid(row=5, column=1, padx=10, pady=10)
 
-    # Training selection label and combo box
+    # Training selection label and checkboxes
     ctk.CTkLabel(parent, text="Capacitaciones: ").grid(row=6, column=0, padx=10, pady=10)
-    training_selection_var = ctk.StringVar(value=available_trainings)  # Default to all available trainings
-    training_selection = ctk.CTkComboBox(
-        parent,
-        values=available_trainings,  # Options from the loaded training data
-        variable=training_selection_var,
-        state="readonly"  # Ensure it’s not editable
-    )
-    training_selection.grid(row=6, column=1, padx=10, pady=10)
+
+    # Create a checkbox for each available training
+    row = 7  # Start from row 7 for checkbox placement
+    for training in available_trainings:
+        checkbox = ctk.CTkCheckBox(
+            parent,
+            text=training,
+            command=lambda training=training: toggle_training(training),
+            fg_color=colors["mauve"],
+            hover_color=colors["maroon"],
+            text_color=colors["text"]
+        )
+        checkbox.grid(row=row, column=0, padx=10, pady=5, sticky="w")
+        row += 1
+
+    # Toggle function for adding/removing training from the selected list
+    def toggle_training(training):
+        # Add or remove the training ID (number) from the selected list
+        training_id = training_map[training]
+        if training_id in selected_trainings:
+            selected_trainings.remove(training_id)
+        else:
+            selected_trainings.append(training_id)
 
     # Add user button calling submit_user
     submit_button = ctk.CTkButton(
@@ -96,5 +112,5 @@ def new_user_form(parent, colors):
         hover_color=colors["maroon"],
         text_color=colors["crust"],
     )
-    submit_button.grid(row=8, column=0, columnspan=2, padx=10, pady=10)
+    submit_button.grid(row=row, column=0, columnspan=2, padx=10, pady=10)
 

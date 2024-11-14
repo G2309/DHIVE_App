@@ -4,7 +4,7 @@ import pandas as pd
 # Read Capacitaciones.xlsx and save to dict
 def load_trainings_available():
     df = read_training_data()
-    return dict(zip(df['No.Capacitación'], df['Capacitación']))
+    return dict(zip(df['No.Capacitación'].astype(int), df['Capacitación']))
 
 trainings_available = load_trainings_available()
 
@@ -42,6 +42,8 @@ def update_user_data(carnet, new_data):
     return False
 
 def get_trainings(training_num):
-    number = [int(n) for n in training_num.split(',') if n.isdigit()]
+    if isinstance(training_num, str):
+        number = [int(n) for n in training_num.split(',') if n.isdigit()]
+    else:
+        number = []
     return ', '.join([trainings_available[num] for num in number if num in trainings_available])
-

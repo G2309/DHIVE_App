@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from app.user_data import find_user_by_id
+from app.user_data import find_user_by_id, get_trainings
 from interface.form import new_user_form
 
 def setup_student_tab(tab, colors):
@@ -40,11 +40,16 @@ def setup_student_tab(tab, colors):
             # Retrieve user data by ID
             user_data = find_user_by_id(carnet)
             if not user_data.empty:
+                trainings = get_trainings(user_data.iloc[0]['Capacitaciones'])
+                # New line for each training
+                formatted_trainings = "\n".join(trainings)
                 # Format of user info
                 user_info = (
+                    f"Rol: {user_data.iloc[0]['ROL']}\n"
                     f"Nombre: {user_data.iloc[0]['Primer Nombre']} {user_data.iloc[0]['Segundo Nombre']}\n"
                     f"Apellido: {user_data.iloc[0]['Primer apellido']} {user_data.iloc[0]['Segundo apellido']}\n"
-                    f"Carrera: {user_data.iloc[0]['Carrera']}"
+                    f"Carrera: {user_data.iloc[0]['Carrera']}\n"
+                    f"Capacitaciones:\n{trainings}"
                 )
                 user_data_label.configure(text=user_info)
             else:

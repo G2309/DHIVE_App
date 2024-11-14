@@ -1,30 +1,18 @@
-from app.file_reader import read_user_data
+from app.file_reader import read_user_data, read_training_data
 import pandas as pd
 
-# Diccionario con las capacitaciones disponibles (para agregar una nueva capacitacion, hazlo en el ultimo lugar sumando 1 a la llave)
-trainings_available = {
-        1: "Láser K40",
-        2: "Láser ULS",
-        3: "Escaner 3D Mano",
-        4: "Escaner 3D Pequeño",
-        5: "Impresión 3D",
-        6: "Impresión 3D resina",
-        7: "Máquina de coser",
-        8: "Seguridad",
-        9: "Sublimanción",
-        10: "Termoformadora",
-        11: "Vinilo",
-        12: "Impresión 3D fibra carbono",
-        13: "Taladro de pedestal",
-        14: "Laminadora",
-        15: "Dobladora"
-}
+# Read Capacitaciones.xlsx and save to dict
+def load_trainings_available():
+    df = read_training_data()
+    return dict(zip(df['No.Capacitación'], df['Capacitación']))
 
-# Leer todos los datos
+trainings_available = load_trainings_available()
+
+# Read users data
 def get_users_data():
     return read_user_data()
 
-# Agregar un nuevo usuario
+# Add a new user to xlsx
 def add_new_user(new_user):
     df = get_users_data()
     new_user["Número usuario"] = df["Número usuario"].max() + 1
@@ -32,18 +20,18 @@ def add_new_user(new_user):
     df.to_excel('DATOS_USUARIOS.xlsx', index=False)
     return True
 
-# Verificar si un usuario existe en el xlsx
+# Verify if a user exists in the xlsx
 def verify_user(name, carnet):
     df = get_users_data()
     user = df[(df["Primer Nombre"] == name) & (df["Carnet"] == carnet)]
     return not user.empty   # Retorna True si existe; False si no existe
 
-# Buscar por carnet
+# Search a user by carnet
 def find_user_by_id(carnet):
     df = get_users_data()
     return df[df['Carnet'] == carnet]
 
-# MModificar data
+# Modify data
 def update_user_data(carnet, new_data):
     df = get_users_data()
     index = df[df['Carnet'] == carnet].index

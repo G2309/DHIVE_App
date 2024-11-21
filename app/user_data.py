@@ -21,10 +21,17 @@ def add_new_user(new_user):
     return True
 
 # Verify if a user exists in the xlsx
-def verify_user(name, carnet):
+def verify_user(carnet):
     df = get_users_data()
-    user = df[(df["Primer Nombre"] == name) & (df["Carnet"] == carnet)]
-    return not user.empty   # Retorna True si existe; False si no existe
+    # Convertir el carnet a un número para la comparación
+    try:
+        carnet = int(carnet.strip())
+    except ValueError:
+        return False  # Si no es un número, retorna False
+
+    user = df[df["Carnet"] == carnet]  # Buscar por carnet numérico
+    return not user.empty  # Retorna True si existe; False si no existe
+
 
 # Search a user by carnet
 def find_user_by_id(carnet):
@@ -32,14 +39,26 @@ def find_user_by_id(carnet):
     return df[df['Carnet'] == carnet]
 
 # Modify data
-def update_user_data(carnet, new_data):
+def update_user_in_excel(modified_user):
     df = get_users_data()
-    index = df[df['Carnet'] == carnet].index
-    if not index.empty:
-        df.loc[index, new_data.keys()] = new_data.values()
-        df.to_excel('DATOS_USUARIOS.xlsx', index=False)
+    try:
+        carnet = int(modified_user["Carnet"])
+    except ValueError:
+        return False  # If carnet is invalid, return False
+
+    # Find the user index
+    user_index = df[df["Carnet"] == carnet].index
+    if len(user_index) > 0:
+        index = user_index[0]  # Get the first match index
+        for column, value in modified_user.items():
+            if column in df.columns:
+                df.at[index, column] = value  # Update the specific column
+
+        # Save changes back to the Excel file
+        df.to_excel("DATOS_USUARIOS.xlsx", index=False)
         return True
-    return False
+    else:
+        return False
 
 def get_trainings(training_num):
     if isinstance(training_num, str):

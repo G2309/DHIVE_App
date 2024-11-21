@@ -72,7 +72,7 @@ def new_user_form(parent, colors):
                 "Carrera": career_name_var.get(),
                 "ROL": role_name_var.get(),
                 # Save selected trainings as a list of IDs (numbers)
-                "Capacitaciones": ', '.join(map(str, selected_trainings))  # Convert to string of numbers
+                "Capacitaciones": ','.join(map(str, selected_trainings))  # Convert to string of numbers
             }
 
             # Attempt to add the new user

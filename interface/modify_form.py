@@ -81,7 +81,7 @@ def modify_user_form(parent, colors):
                 "Carnet": carnet,
                 "Carrera": career_name_var.get(),
                 "ROL": role_name_var.get(),
-                "Capacitaciones": ', '.join(map(str, updated_trainings))  # Convertimos la lista en cadena
+                "Capacitaciones": ','.join(map(str, updated_trainings))  # Convertimos la lista en cadena
             }
 
             # Intentar actualizar el usuario en el archivo Excel

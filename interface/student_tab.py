@@ -1,5 +1,5 @@
 import customtkinter as ctk
-from app.user_data import find_user_by_id, get_trainings
+from app.user_data import find_user_by_id, get_trainings, add_block
 from interface.form import new_user_form
 from interface.modify_form import modify_user_form
 
@@ -85,6 +85,42 @@ def setup_student_tab(tab, colors):
         # Load the modify user form
         modify_user_form(right_frame, colors)
 
+    def show_block_user_form():
+        for widget in right_frame.winfo_children():
+            widget.destroy()  # Clear right frame
+
+        # Input for Carnet
+        carnet_var = ctk.StringVar()
+        ctk.CTkLabel(right_frame, text="Carnet: ").grid(row=0, column=0, padx=10, pady=10)
+        carnet_entry = ctk.CTkEntry(right_frame, textvariable=carnet_var)
+        carnet_entry.grid(row=0, column=1, padx=10, pady=10)
+
+        def block_user_action():
+            try:
+                carnet = int(carnet_var.get().strip())
+            except ValueError:
+                block_result_label.configure(text="Formato de carnet inválido.")
+                return
+
+            # Call the block_user function
+            if add_block(carnet):
+                block_result_label.configure(text=f"Usuario con carnet {carnet} bloqueado exitosamente.")
+            else:
+                block_result_label.configure(text="Usuario no encontrado.")
+
+        # Button to execute block
+        block_button = ctk.CTkButton(right_frame, text="Bloquear Usuario",
+                                     command=block_user_action,
+                                     fg_color=colors["mauve"],
+                                     hover_color=colors["maroon"],
+                                     text_color=colors["crust"])
+        block_button.grid(row=1, column=0, columnspan=2, padx=10, pady=10)
+
+        # Result label
+        block_result_label = ctk.CTkLabel(right_frame, text="")
+        block_result_label.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+
     # Buttons in left frame for options
     search_button = ctk.CTkButton(left_frame, text="Buscar por ID",
                                   command=show_search_user, 
@@ -107,3 +143,9 @@ def setup_student_tab(tab, colors):
                                   text_color=colors["crust"])
     modify_button.grid(row=2, column=0, padx=10, pady=10)
 
+    block_button = ctk.CTkButton(left_frame, text="Bloquear Usuario",
+                                 command=show_block_user_form,
+                                 fg_color=colors["mauve"],
+                                 hover_color=colors["maroon"],
+                                 text_color=colors["crust"])
+    block_button.grid(row=3, column=0, padx=10, pady=10)

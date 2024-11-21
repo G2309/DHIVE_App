@@ -66,3 +66,21 @@ def get_trainings(training_num):
     else:
         number = []
     return ', '.join([trainings_available[num] for num in number if num in trainings_available])
+
+def add_block(carnet):
+    df = get_users_data()
+    carnet = int(carnet)
+    user_index = df[df["Carnet"]==carnet].index
+
+    if len(user_index)>0:
+        index=user_index[0]
+        current_blocks = df.at[index, "Bloqueos"]
+        if pd.isna(current_blocks) or not isinstance(current_blocks, (int,float)):
+            current_blocks = 0
+        df.at[index,"Bloqueos"] = int(current_blocks) + 1
+        df.to_excel("DATOS_USUARIOS.xlsx", index=False)
+        return True
+    else:
+        return False
+
+

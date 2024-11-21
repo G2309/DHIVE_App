@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from app.assistant_data import register_entry, get_last_record_number  # Importa la función para registrar asistencia
+from datetime import datetime
 
 def setup_assistant_tab(tab, colors):
     """
@@ -46,53 +47,52 @@ def show_register_form(frame, colors):
         entry.grid(row=i+1, column=1, padx=10, pady=5, sticky="w")
         entries[label_text] = entry
 
-    # Time selection
-    time_slots = {
-        "07:00 - 10:00": ("07:00", "10:00"),
-        "10:00 - 13:00": ("10:00", "13:00"),
-        "13:00 - 16:00": ("13:00", "16:00"),
-        "16:00 - 19:00": ("16:00", "19:00")
-    }
+    # Manual time entry
+    entry_labels_time = ["Hora Entrada", "Hora Salida"]
+    time_entries = {}
 
-    time_label = ctk.CTkLabel(frame, text="Turno de Asistencia")
-    time_label.grid(row=len(entry_labels) + 1, column=0, padx=10, pady=5, sticky="e")
-    
-    time_var = ctk.StringVar(value="07:00 - 10:00")
-    time_dropdown = ctk.CTkOptionMenu(frame, variable=time_var, values=list(time_slots.keys()),
-                                      fg_color=colors["mauve"], button_hover_color=colors["maroon"], button_color=colors["peach"])
-    time_dropdown.grid(row=len(entry_labels) + 1, column=1, padx=10, pady=5, sticky="w")
+    for i, label_text in enumerate(entry_labels_time):
+        label = ctk.CTkLabel(frame, text=label_text)
+        label.grid(row=len(entry_labels) + i + 1, column=0, padx=10, pady=5, sticky="e")
+        
+        entry = ctk.CTkEntry(frame)
+        entry.grid(row=len(entry_labels) + i + 1, column=1, padx=10, pady=5, sticky="w")
+        time_entries[label_text] = entry
 
     # Submit button
     submit_button = ctk.CTkButton(
         frame, 
         text="Guardar Asistencia", 
-        command=lambda: save_entry(entries, time_var, time_slots, frame, colors),
+        command=lambda: save_entry(entries, time_entries, frame, colors),
         fg_color=colors["mauve"],
         hover_color=colors["maroon"]
     )
-    submit_button.grid(row=len(entry_labels) + 2, column=0, columnspan=2, pady=20)
+    submit_button.grid(row=len(entry_labels) + len(entry_labels_time) + 2, column=0, columnspan=2, pady=20)
 
-def save_entry(entries, time_var, time_slots, frame, colors):
+def save_entry(entries, time_entries, frame, colors):
     """
     Saves the attendance entry to the Excel file.
     """
     # Retrieve values from entries
     data = {label: entry.get() for label, entry in entries.items()}
     
-    # Add time information
-    data["Hora entrada"], data["Hora salida"] = time_slots[time_var.get()]
+    # Add manual time information
+    data["Hora entrada"] = time_entries["Hora Entrada"].get()
+    data["Hora salida"] = time_entries["Hora Salida"].get()
 
     # Get the current max "No.Registro" and increment by 1
-    # Assuming `get_last_record_number` is a function that retrieves the last record number from the file/database
     last_record = get_last_record_number()
     data["No.Registro"] = last_record + 1
+
+    # Timestamp
+    data["Fecha"] = datetime.now().strftime("%d-%m-%Y")   # Here is the format of datetime
 
     # Call the backend function to register the entry
     register_entry(data)
 
     # Display success message in the GUI
     success_message = ctk.CTkLabel(frame, text="Asistencia registrada con éxito", fg_color=colors["green"], font=("Arial", 12, "bold"))
-    success_message.grid(row=len(entries) + 3, column=0, columnspan=2, pady=10)
+    success_message.grid(row=len(entries) + len(time_entries) + 3, column=0, columnspan=2, pady=10)
 
     # Automatically clear the message after a short delay
     frame.after(3000, success_message.destroy)  # Clears message after 3 seconds

@@ -112,7 +112,7 @@ def modify_user_form(parent, colors):
     # ROL selectbox
     ctk.CTkLabel(parent, text="ROL: ").grid(row=6, column=0, padx=10, pady=10)
     role_selectbox = ctk.CTkOptionMenu(parent, variable=role_name_var,
-                                       values=["Estudiante", "Auxiliar"],
+                                       values=["Estudiante", "Auxiliar", "Colaborador", "Otro"],
                                        fg_color=colors["mauve"], button_hover_color=colors["maroon"],
                                        button_color=colors["peach"])
     role_selectbox.grid(row=6, column=1, padx=10, pady=10)

@@ -19,7 +19,8 @@ def setup_assistant_tab(tab, colors):
         text="Registrar Asistencia", 
         command=lambda: show_register_form(right_frame, colors),
         fg_color=colors["mauve"],
-        hover_color=colors["maroon"]
+        hover_color=colors["maroon"],
+        text_color=colors["crust"]
     )
     register_button.grid(row=0, column=0, padx=10, pady=10)
 
@@ -65,7 +66,8 @@ def show_register_form(frame, colors):
         text="Guardar Asistencia", 
         command=lambda: save_entry(entries, time_entries, frame, colors),
         fg_color=colors["mauve"],
-        hover_color=colors["maroon"]
+        hover_color=colors["maroon"],
+        text_color=colors["crust"]
     )
     submit_button.grid(row=len(entry_labels) + len(entry_labels_time) + 2, column=0, columnspan=2, pady=20)
 

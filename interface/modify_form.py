@@ -106,7 +106,7 @@ def modify_user_form(parent, colors):
     career_selectbox = ctk.CTkOptionMenu(parent, variable=career_name_var,
                                          values=opciones1, fg_color=colors["mauve"],
                                          button_hover_color=colors["maroon"],
-                                         button_color=colors["peach"])
+                                         button_color=colors["peach"], text_color=colors["crust"])
     career_selectbox.grid(row=5, column=1, padx=10, pady=10)
     
     # ROL selectbox
@@ -114,7 +114,7 @@ def modify_user_form(parent, colors):
     role_selectbox = ctk.CTkOptionMenu(parent, variable=role_name_var,
                                        values=["Estudiante", "Auxiliar", "Colaborador", "Otro"],
                                        fg_color=colors["mauve"], button_hover_color=colors["maroon"],
-                                       button_color=colors["peach"])
+                                       button_color=colors["peach"], text_color=colors["crust"])
     role_selectbox.grid(row=6, column=1, padx=10, pady=10)
 
     # Training selection label and checkboxes
@@ -129,7 +129,8 @@ def modify_user_form(parent, colors):
             command=lambda training=training: toggle_training(training),
             fg_color=colors["mauve"],
             hover_color=colors["maroon"],
-            text_color=colors["text"]
+            text_color=colors["text"],
+            checkmark_color=colors["crust"]
         )
         checkbox.grid(row=row, column=0, padx=10, pady=5, sticky="w")
         row += 1

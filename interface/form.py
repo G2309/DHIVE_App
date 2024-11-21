@@ -60,7 +60,7 @@ def new_user_form(parent, colors):
             return
 
         # Verify if user already exists
-        if verify_user(first_name, carnet):
+        if verify_user(carnet):
             message_var.set("El usuario ya existe.")
         else:
             new_user = {

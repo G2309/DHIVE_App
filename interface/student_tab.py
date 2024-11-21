@@ -12,7 +12,7 @@ def setup_student_tab(tab, colors):
     # Left frame = user options
     # Right frame = input
     left_frame = ctk.CTkFrame(tab, width=500, fg_color=colors["base"])
-    left_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ns")
+    left_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 
     right_frame = ctk.CTkFrame(tab, fg_color=colors["mantle"])
     right_frame.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
@@ -28,7 +28,7 @@ def setup_student_tab(tab, colors):
         
         # Input for ID number
         carnet_var = ctk.StringVar()
-        ctk.CTkLabel(right_frame, text="Carnet: ").grid(row=0, column=0, padx=10, pady=10)
+        ctk.CTkLabel(right_frame, text="Carnet: ").grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
         carnet_entry = ctk.CTkEntry(right_frame, textvariable=carnet_var)
         carnet_entry.grid(row=0, column=1, padx=10, pady=10)
 

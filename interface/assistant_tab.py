@@ -8,7 +8,7 @@ def setup_assistant_tab(tab, colors):
     """
     # Create left and right frames
     left_frame = ctk.CTkFrame(tab, width=500, fg_color=colors["base"])
-    left_frame.grid(row=0, column=0, padx=10, pady=20, sticky="ns")
+    left_frame.grid(row=0, column=0, padx=10, pady=20, sticky="nsew")
 
     right_frame = ctk.CTkFrame(tab, fg_color=colors["mantle"])
     right_frame.grid(row=0, column=1, padx=10, pady=20, sticky="nsew")

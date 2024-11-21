@@ -1,8 +1,8 @@
 import customtkinter as ctk
-from app.user_data import verify_user, find_user_by_id, add_new_user, update_user_in_excel 
+from app.user_data import find_user_by_id, update_user_in_excel
 from app.training_data import get_training_data
 
-# Define la lista de carreras (opciones disponibles para la selección)
+# Define la lista de carreras
 opciones1 = [
     "Arquitectura", "Administración de empresas con Especialización en Transformación Digital",
     "Antropología", "Arqueología", "Baccalaureatus en Artibus", "Baccalaureatus en Scientiis",
@@ -43,7 +43,7 @@ def modify_user_form(parent, colors):
     training_map = {training: index + 1 for index, training in enumerate(available_trainings)}
 
     # Store selected training IDs
-    selected_trainings = []
+    selected_trainings = set()
 
     # State message label
     message_label = ctk.CTkLabel(parent, textvariable=message_var)
@@ -52,19 +52,27 @@ def modify_user_form(parent, colors):
     # Function to handle user modification logic
     def submit_user():
         carnet = id_number_var.get().strip()
-        # Validate numeric ID
         if not carnet.isdigit():
             message_var.set("Error: El carnet debe ser un número")
             return
-        
-        carnet = int(carnet)
 
+        carnet = int(carnet)
         user_data = find_user_by_id(carnet)
-        
+
         if user_data is None:
             message_var.set("Usuario no encontrado.")
         else:
-            # Modify the user data
+            # Obtener capacitaciones existentes del usuario
+            existing_trainings = user_data.get("Capacitaciones", "")
+            if isinstance(existing_trainings, str):
+                existing_training_ids = set(map(int, existing_trainings.split(", "))) if existing_trainings else set()
+            else:
+                existing_training_ids = set()
+
+            # Combinar capacitaciones seleccionadas con las existentes
+            updated_trainings = sorted(existing_training_ids | selected_trainings)  # Unión de conjuntos, evita duplicados
+
+            # Modificar los datos del usuario
             modified_user = {
                 "Primer Nombre": first_name_var.get(),
                 "Segundo Nombre": second_name_var.get(),
@@ -73,11 +81,10 @@ def modify_user_form(parent, colors):
                 "Carnet": carnet,
                 "Carrera": career_name_var.get(),
                 "ROL": role_name_var.get(),
-                # Save selected trainings as a list of IDs (numbers)
-                "Capacitaciones": ', '.join(map(str, selected_trainings))  # Convert to string of numbers
+                "Capacitaciones": ', '.join(map(str, updated_trainings))  # Convertimos la lista en cadena
             }
 
-            # Attempt to update the user in the Excel file
+            # Intentar actualizar el usuario en el archivo Excel
             if update_user_in_excel(modified_user):
                 message_var.set("Usuario modificado exitosamente")
                 message_label.configure(text_color="green")
@@ -142,7 +149,7 @@ def modify_user_form(parent, colors):
         if training_id in selected_trainings:
             selected_trainings.remove(training_id)
         else:
-            selected_trainings.append(training_id)
+            selected_trainings.add(training_id)
 
     # Add user button calling submit_user
     submit_button = ctk.CTkButton(

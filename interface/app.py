@@ -6,8 +6,14 @@ from interface.assistant_tab import setup_assistant_tab  # Import the assistant 
 def create_tabs(parent, colors):
     # Create the TabView for the 3 tabs
     tabview = ctk.CTkTabview(parent)
-    tabview.grid(row=0, column=0, padx=20, pady=20)
-    tabview.configure(require_redraw=True, fg_color=colors["mantle"])
+    tabview.grid(row=0, column=0, padx=20, pady=20, sticky="nsew")
+    tabview.configure(require_redraw=True, fg_color=colors["mantle"],
+                      segmented_button_selected_color=colors["mauve"],
+                      segmented_button_selected_hover_color=colors["flamingo"],
+                      text_color_disabled=colors["text"],
+                      text_color=colors["crust"],
+                      segmented_button_unselected_hover_color=colors["flamingo"],
+                      segmented_button_unselected_color=colors["base"])
 
     # Create the 3 tabs
     tabview.add("Estudiantes")
